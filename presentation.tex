@@ -1,0 +1,232 @@
+%%%
+
+%% Beamer?
+%\documentclass{beamer}
+
+%%% Handout?
+\documentclass[]{article}
+\usepackage{beamerarticle}
+
+%%%
+
+\usepackage{amsmath,amssymb,amsfonts,dcolumn,color,graphicx,graphics,setspace,latexsym,setspace,lscape,subfigure,placeins,epsfig,hyperref}
+\usepackage{eulervm}
+
+\usecolortheme[dark]{solarized}
+
+%\setbeamersize{text margin left=10pt}
+
+% Solarized palette
+\definecolor{solarizedBase03}{HTML}{002B36}
+\definecolor{solarizedBase02}{HTML}{073642}
+\definecolor{solarizedBase01}{HTML}{586e75}
+\definecolor{solarizedBase00}{HTML}{657b83}
+\definecolor{solarizedBase0}{HTML}{839496}
+\definecolor{solarizedBase1}{HTML}{93a1a1}
+\definecolor{solarizedBase2}{HTML}{EEE8D5}
+\definecolor{solarizedBase3}{HTML}{FDF6E3}
+\definecolor{solarizedYellow}{HTML}{B58900}
+\definecolor{solarizedOrange}{HTML}{CB4B16}
+\definecolor{solarizedRed}{HTML}{DC322F}
+\definecolor{solarizedMagenta}{HTML}{D33682}
+\definecolor{solarizedViolet}{HTML}{6C71C4}
+\definecolor{solarizedBlue}{HTML}{268BD2}
+\definecolor{solarizedCyan}{HTML}{2AA198}
+\definecolor{solarizedGreen}{HTML}{859900}
+
+
+%\documentclass[preprint]{aa}
+
+%\documentclass[preprint]{aastex}
+
+%\documentclass[journal = ancham]{achemso}
+%\setkeys{acs}{useutils = true}
+%\usepackage{fullpage}
+\usepackage{natbib,twoopt}
+%\pretolerance=2000
+%\tolerance=6000
+%\hbadness=6000
+%\usepackage[landscape]{geometry}
+%\usepackage{pxfonts}
+%\usepackage{cmbright}
+%\usepackage[varg]{txfonts}
+%\usepackage{mathptmx}
+%\usepackage{tgtermes}
+\usepackage[utf8]{inputenc}
+%\usepackage{fouriernc}
+%\usepackage[adobe-utopia]{mathdesign}
+\usepackage[T1]{fontenc}
+%\usepackage[norsk]{babel}
+%\usepackage{epsfig}
+%\usepackage{graphicx}
+%\usepackage{amsmath}
+%\usepackage[version=3]{mhchem}
+%\usepackage{pstricks}
+%\usepackage[font=small,labelfont=bf,tableposition=below]{caption}
+%\usepackage{subfig}
+%\usepackage{varioref}
+%\usepackage{hyperref}
+%\usepackage{listings}
+%\usepackage{sverb}
+%\usepackage{microtype}
+%\usepackage{enumerate}
+%\usepackage{enumitem}
+%\usepackage{lineno}
+%\usepackage{booktabs}
+%\usepackage{changepage}
+%\usepackage[flushleft]{threeparttable}
+%\usepackage{pdfpages}
+%\usepackage{float}
+%\usepackage{mathtools}
+%\usepackage{etoolbox}
+%\usepackage{xstring}
+\usepackage{aas_macros}
+
+%\usepackage{layouts}
+
+%\floatstyle{plaintop}
+%\restylefloat{table}
+%\floatsetup[table]{capposition=top}
+
+\setcounter{secnumdepth}{3}
+
+\newcommand{\tr}{\, \text{tr}\,}
+\newcommand{\diff}{\ensuremath{\; \text{d}}}
+\newcommand{\diffd}{\ensuremath{\text{d}}}
+\newcommand{\sgn}{\ensuremath{\; \text{sgn}}}
+\newcommand{\UA}{\ensuremath{_{\uparrow}}}
+\newcommand{\RA}{\ensuremath{_{\rightarrow}}}
+\newcommand{\QED}{\left\{ \hfill{\textbf{QED}} \right\}}
+
+%% The below macros turn citations into ADS clickers in dvi, pdf, html output.
+%% EDP Sciences improved them in December 2012 to work also with pdflatex.
+\bibpunct{(}{)}{;}{a}{}{,}    %% natbib cite format used by A&A and ApJ
+\makeatletter
+ \newcommandtwoopt{\citeads}[3][][]{\href{http://adsabs.harvard.edu/abs/#3}%
+   {\def\hyper@linkstart##1##2{}%
+    \let\hyper@linkend\@empty\citealp[#1][#2]{#3}}}    %% Rutten, 2000
+ \newcommandtwoopt{\citepads}[3][][]{\href{http://adsabs.harvard.edu/abs/#3}%
+   {\def\hyper@linkstart##1##2{}%
+    \let\hyper@linkend\@empty\citep[#1][#2]{#3}}}      %% (Rutten 2000)
+ \newcommandtwoopt{\citetads}[3][][]{\href{http://adsabs.harvard.edu/abs/#3}%
+   {\def\hyper@linkstart##1##2{}%
+    \let\hyper@linkend\@empty\citet[#1][#2]{#3}}}      %% Rutten (2000)
+ \newcommandtwoopt{\citeyearads}[3][][]%
+   {\href{http://adsabs.harvard.edu/abs/#3}%
+   {\def\hyper@linkstart##1##2{}%
+    \let\hyper@linkend\@empty\citeyear[#1][#2]{#3}}}   %% 2000
+\makeatother
+
+%\newcommand{\diff}{%
+%    \IfEqCase{frac{\diff}{%
+%        {\ensuremath{frac{\text{d}} }}%
+%        {\ensuremath{\; \text{d}} }% 
+%    }[\PackageError{diff}{Problem with diff}{}]%
+%}%
+
+%\lstset{language=[90]Fortran,
+%  basicstyle=\ttfamily,
+%  basicstyle=\tiny,
+%  keywordstyle=\color{red},
+%  commentstyle=\color{green},
+%  morecomment=[l]{!\ },% Comment only with space after !
+%  numbers=left
+%}
+
+
+
+\date{April 29, 2014}
+
+\title{Numerical Treatment of Polarisation}
+
+\subtitle{ \textit{\footnotesize\textcolor{solarizedBase1}{ Or:}}\\ Do numerical models of the first cosmological sources of light give any physical meaning?\\
+\textit{\footnotesize\textcolor{solarizedBase1}{ and:}} \\
+Can these (sensible?) models predict the degree of polarisation?\\
+\textit{\footnotesize\textcolor{solarizedBase1}{ or, in other words:}}\\
+What happened after big bang?\\
+\textit{\footnotesize\textcolor{solarizedBase1}{ tl;dr:}}\\
+What \textit{is} out there?}
+
+\author{Marius Berge Eide \\ \texttt{m.b.eide@astro.uio.no}}
+
+\institute[ITA UIO]{Institute of Theoretical Astrophysics, University of Oslo}
+
+
+\begin{document}
+
+
+%\onecolumn
+\maketitle{}
+
+\begin{frame}
+\section{What is out there?}
+\begin{center}
+    {\huge \textcolor{solarizedBase3}{
+    What is out there?}}
+
+    \begin{table}
+        \centering
+        \begin{tabular*}{\textwidth}{c@{\extracolsep\fill}c c c c}
+            \\
+            &Probing the universe? \\ \\
+            Big Bang \\
+            &&Dark ages \\
+            Epoch of Reionisation
+            \\ \\ 
+            &The first light
+        \end{tabular*}
+        \label{tab:EoR}
+    \end{table}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+    \section{The Epoch of Reionisation}
+    \begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        The Epoch of Reionisation (\textit{EoR})
+    }}
+    \end{center}
+
+
+\end{frame}
+
+\begin{frame}
+    \section{The first sources of light}
+\begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        The first sources of light
+    }}
+\end{center}
+    
+\end{frame}
+
+\begin{frame}
+    \section{Modelling light using random numbers}
+    \begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        Modelling light using random numbers
+    }}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \section{Polarisation}
+    \begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        Polarisation
+    }}
+    \end{center}
+\end{frame}
+
+
+%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%
+\bibliography{referanser}
+\bibliographystyle{apj}
+%\bibliographystyle{astroads}
+%\bibliographystyle{apj_hyperref}
+
+
+\end{document}
+
