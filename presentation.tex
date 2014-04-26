@@ -1,22 +1,23 @@
 %%%
 
 %% Beamer?
-%\documentclass{beamer}
+%\documentclass[ignorenonframetext]{beamer}
+%\usecolortheme[dark]{solarized}
 
 %%% Handout?
-\documentclass[]{article}
+\documentclass[noxcolor]{article}
 \usepackage{beamerarticle}
+\setbeamertemplate{note page}[plain]
 
 %%%
 
 \usepackage{amsmath,amssymb,amsfonts,dcolumn,color,graphicx,graphics,setspace,latexsym,setspace,lscape,subfigure,placeins,epsfig,hyperref}
 \usepackage{eulervm}
 
-\usecolortheme[dark]{solarized}
-
 %\setbeamersize{text margin left=10pt}
 
 % Solarized palette
+\mode<presentation>{
 \definecolor{solarizedBase03}{HTML}{002B36}
 \definecolor{solarizedBase02}{HTML}{073642}
 \definecolor{solarizedBase01}{HTML}{586e75}
@@ -34,6 +35,13 @@
 \definecolor{solarizedCyan}{HTML}{2AA198}
 \definecolor{solarizedGreen}{HTML}{859900}
 
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[page number]{}
+
+%gets rid of navigation symbols
+    \setbeamertemplate{navigation symbols}{}
+
+}
 
 %\documentclass[preprint]{aa}
 
@@ -62,7 +70,7 @@
 %\usepackage{amsmath}
 %\usepackage[version=3]{mhchem}
 %\usepackage{pstricks}
-%\usepackage[font=small,labelfont=bf,tableposition=below]{caption}
+\usepackage[font=small,labelfont=bf,tableposition=below]{caption}
 %\usepackage{subfig}
 %\usepackage{varioref}
 %\usepackage{hyperref}
@@ -139,6 +147,7 @@
 
 \title{Numerical Treatment of Polarisation}
 
+\mode<presentation>{
 \subtitle{ \textit{\footnotesize\textcolor{solarizedBase1}{ Or:}}\\ Do numerical models of the first cosmological sources of light give any physical meaning?\\
 \textit{\footnotesize\textcolor{solarizedBase1}{ and:}} \\
 Can these (sensible?) models predict the degree of polarisation?\\
@@ -146,7 +155,15 @@ Can these (sensible?) models predict the degree of polarisation?\\
 What happened after big bang?\\
 \textit{\footnotesize\textcolor{solarizedBase1}{ tl;dr:}}\\
 What \textit{is} out there?}
-
+}
+\mode<article>{
+\subtitle{
+\textit{\footnotesize Or:}\\ Do numerical models of the first cosmological sources of light give any physical meaning?\\
+\textit{\footnotesize and:} \\ Can these (sensible?) models predict the degree of polarisation?\\
+\textit{\footnotesize or, in other words:}\\ What happened after big bang?\\
+\textit{\footnotesize tl;dr:}\\
+What \textit{is} out there?}
+}
 \author{Marius Berge Eide \\ \texttt{m.b.eide@astro.uio.no}}
 
 \institute[ITA UIO]{Institute of Theoretical Astrophysics, University of Oslo}
@@ -156,11 +173,12 @@ What \textit{is} out there?}
 
 
 %\onecolumn
-\maketitle{}
+\frame{\maketitle{}}
 
 \begin{frame}
 \section{What is out there?}
 \begin{center}
+    \mode<presentation>{
     {\huge \textcolor{solarizedBase3}{
     What is out there?}}
 
@@ -176,50 +194,135 @@ What \textit{is} out there?}
             &The first light
         \end{tabular*}
         \label{tab:EoR}
-    \end{table}
+    \end{table}}
+
+    \mode<article>{
+        \begin{itemize}
+            \item Probing the universe?
+            \item Big Bang
+            \item Dark ages
+            \item Epoch of Reionisation
+            \item The first light
+        \end{itemize}
+    }
 
 \end{center}
 \end{frame}
 
 \begin{frame}
     \section{The Epoch of Reionisation}
+    \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
         The Epoch of Reionisation (\textit{EoR})
     }}
-    \end{center}
+\end{center}}
+\end{frame}
+\begin{frame}
 
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=0.7\columnwidth]{figs/zaroubi_EOR.png}
+        \caption{ Evolution of the differential brightness temperature $\delta T_b \equiv T_b - T_{\rm CMB}$, where $T_b$: brightness temperature, $T_{\rm CMB}$: CMB temperature. {\em Top case: Mini-qsos, Middle case: Thermal sources (stars), Bottom case: Hybrid}. From \citeads{2013ASSL..396...45Z}. }
+        \label{fig:1_EOR}
+    \end{figure}
 
 \end{frame}
 
+\subsection{Causes of reionisation}
+The epoch of reionisation follows the dark ages. It is the period when the ubiquitous hydrogen of the universe is ionised.
+
+The EoR can be probed by observations of the forbidden 21-cm line, which is the photon signature coming from a spin flip in the ground state of neutral hydrogen. 
+
+This line can be observed using radio-telescopes. As the telescope scans at a cube in angular and redshift space, for one specific frequency window, it will register the so-called \textit{brightness temperature}, $T_b$, of that cube. This temperature can be contrasted to the black-body temperature at the corresponding redshift, $T_{\rm CMB}$. 
+
+When probing the frequency that corresponds to the redshifted 21-cm line in a laboratory frame, the telescope will register a change in voltage, due to the change in intensity of that cube, which can be transformed to the brightness temperature. 
+
+In fig.~(\ref{fig:1_EOR}), three numerical scenarios are shown. The upper plot gives the $\delta T_b$ in the case where reionisation is driven by mini-quasars, that is to say, the ionisation is caused by mostly X-rays. The middle plot gives $\delta T_b$ in the case where reionisation is driven by thermal radiation from stars. The lower plot shows the case where reionisation is driven by a mix of the aforementioned two.
+
+When there is no neutral hydrogen, no signal should be detected, and thus should the observed $T_b$ be equal $T_{\rm CMB}$. 
+
+It is obvious that if mini-QSOs were the source, the reionisation should occur rather swiftly, whereas stellar-driven reionisation should proceed slower.
+
+\begin{frame}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=0.6\columnwidth]{figs/zaroubi_LYA.png}
+        \caption{Displacement of the Gunn-Peterson through with increasing redshift $z$. From \citetads{2013ASSL..396...45Z}.}
+        \label{fig:2_LYA}
+    \end{figure}
+
+\end{frame}
+
+\subsection{Observational evidence of reionisation}
+A excellent probe of the amount of neutral hydrogen is the Lyman $\alpha$ line, the photon identity of a transition from the $n=1$ to $n=2$ state (or vice-versa) of a neutral hydrogen atom, absorbing/emitting a photon with frequency $\lambda = 1216$~\AA in a laboratory frame.
+
+A measure of the opacity of the universe at a given wavelength is the \textit{optical depth}. 
+
+\begin{frame}
+    Change in optical depth $\tau_\nu$ along a line of sight $s$ \citepads{Rutten:2003}:
+    \begin{equation}
+        \diffd \tau_\nu(s) \equiv \alpha_{\nu}(s) \diff s
+        \label{eq:dtau}
+    \end{equation}
+    with $\alpha_\nu$: the frequency-dependent ($\nu$) \textbf{extinction coefficient}.
+
+    The optical depth \textbf{\textit{increases}} if there are extinction events along $\diffd s$.
+
+    \begin{itemize}
+        \item $\tau > 1$: the medium is \textit{optically thick} -- \textbf{opaque}
+        \item $\tau < 1$: the medium is \textit{optically thin} -- \textbf{transparent}
+    \end{itemize}
+
+\end{frame}
+
+Setting $\tau = 1$ for the Ly-$\alpha$ line, one can find the physical location $s$ where the universe becomes opaque at this wavelenght. The \textit{required amount of neutral hydrogen} is 0.01 \% to the total amount of hydrogen (in all states, neutral, excited or ionised).
+
+{\center
+    \textit{\textbf{The Ly-$\alpha$ line is highly sensitive to the amount of neutral hydrogen along a line of sight.}}
+}
+
+Observations of quasars at different redshifts in the Sloan Digital Sky Survey (SDSS) reveals that the higher redshift one observes the light from the quasar originates from, the higher optical depth one has for frequencies that are higher than the Ly-$\alpha$ frequency. 
+
+This means that at high $z$, there should be more scattering/absorption events of photons with adequate frequency. This is an indication on the presence and abundance of neutral hydrogen. 
+
+The decrease in optical depth blueward of the Ly-$\alpha$ line gives an indication of \textit{when} (at which $z$) the universe became ionised. 
+
+For $z \gtrsim 6.03$, one finds a significant increase in optical depth.
+
 \begin{frame}
     \section{The first sources of light}
+    \mode<presentation>{
 \begin{center}
     {\huge \textcolor{solarizedBase3}{
         The first sources of light
     }}
-\end{center}
+\end{center}}
     
 \end{frame}
 
 \begin{frame}
     \section{Modelling light using random numbers}
+    \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
         Modelling light using random numbers
     }}
-    \end{center}
+\end{center}}
+
 \end{frame}
 
 \begin{frame}
     \section{Polarisation}
+    \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
         Polarisation
     }}
-    \end{center}
+\end{center}}
 \end{frame}
 
+\begin{frame}
 
 %%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%
 \bibliography{referanser}
@@ -227,6 +330,8 @@ What \textit{is} out there?}
 %\bibliographystyle{astroads}
 %\bibliographystyle{apj_hyperref}
 
+    
+\end{frame}
 
 \end{document}
 
