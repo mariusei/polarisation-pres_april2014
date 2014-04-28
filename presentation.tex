@@ -1,13 +1,13 @@
 %%%
 
 %% Beamer?
-%\documentclass[ignorenonframetext]{beamer}
-%\usecolortheme[dark]{solarized}
+\documentclass[ignorenonframetext]{beamer}
+\usecolortheme[dark]{solarized}
 
 %%% Handout?
-\documentclass[noxcolor]{article}
-\usepackage{beamerarticle}
-\setbeamertemplate{note page}[plain]
+%\documentclass[noxcolor]{article}
+%\usepackage{beamerarticle}
+%\setbeamertemplate{note page}[plain]
 
 %%%
 
@@ -175,8 +175,8 @@ What \textit{is} out there?}
 %\onecolumn
 \frame{\maketitle{}}
 
-\begin{frame}
 \section{What is out there?}
+\begin{frame}
 \begin{center}
     \mode<presentation>{
     {\huge \textcolor{solarizedBase3}{
@@ -197,20 +197,32 @@ What \textit{is} out there?}
     \end{table}}
 
     \mode<article>{
-        \begin{itemize}
-            \item Probing the universe?
-            \item Big Bang
-            \item Dark ages
-            \item Epoch of Reionisation
-            \item The first light
-        \end{itemize}
+        \begin{description}
+            \item[Probing the universe?]
+                Light is the only current source of information about the universe, one cannot count particles, measure the magnetic field directly or stick a thermometer out there and wait. 
+                
+                In the future, one might imagine that some ingenious way of detecting neutrinos has been invented, and that would give us another source of information.
+            \item[Big Bang]
+            \item[Dark ages]
+            \item[Epoch of Reionisation]
+            \item[The first light]
+                The most abundant element in the universe is hydrogen, constituting more than 90 \% of all the particles.
+                
+                The most frequent transition is between the ground $n=1$ and the first excited state $n=2$ of neutral hydrogen, emitting/absorbing a photon identified with a wavelength of 1216~\AA ~in a laboratory frame.
+
+                So, Ly-$\alpha$ is one of the most prominent spectral lines one observes in astrophysics. Some of the earliest observed galaxies can \textit{only} be seen by the slight increase in flux coming from the Ly$\alpha$-line compared to other wavelengths that blend with the background continuum. Such galaxies are old, and thus identified by high star formation rates (SFRs). These galaxies are denoted Ly$\alpha$ emitters (LAEs).
+
+                But! The oldest galaxies that have been observed, are not seen because of their emission of light, but rather for the \textit{lack} of light coming with wavelengths shorter than what is required to ionise hydrogen. These are known as Lyman break galaxies (LBGs).
+
+                To tell something about what caused the Epoch of Reionisation, it is very interesting to look at what events caused the first light. \textit{Were it blinding quasars, dust that is accelerated towards a black hole; were it the first stars, blasting away the bound electrons of nearby hydrogen atoms?}
+        \end{description}
     }
 
 \end{center}
 \end{frame}
 
+\section{The Epoch of Reionisation}
 \begin{frame}
-    \section{The Epoch of Reionisation}
     \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
@@ -218,8 +230,8 @@ What \textit{is} out there?}
     }}
 \end{center}}
 \end{frame}
-\begin{frame}
 
+\begin{frame}
     \begin{figure}[htb]
         \centering
         \includegraphics[width=0.7\columnwidth]{figs/zaroubi_EOR.png}
@@ -290,27 +302,53 @@ The decrease in optical depth blueward of the Ly-$\alpha$ line gives an indicati
 
 For $z \gtrsim 6.03$, one finds a significant increase in optical depth.
 
-\begin{frame}
-    \section{The first sources of light}
-    \mode<presentation>{
-\begin{center}
-    {\huge \textcolor{solarizedBase3}{
-        The first sources of light
-    }}
-\end{center}}
-    
-\end{frame}
+\section{Modelling the first light}
+In this section I will briefly review how to model radiative processes.
 
 \begin{frame}
-    \section{Modelling light using random numbers}
     \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
-        Modelling light using random numbers
+        Modelling the first light
     }}
 \end{center}}
 
+\begin{center}
+    \textit{Deterministic models}   \quad vs. \quad \textit{Stochastic models}
+\end{center}
+
+\pause \begin{equation}
+    \diffd I = -I_0 \diff \tau
+    \label{eq:diffIntensity}
+\end{equation}
+with $I_0$ the initial intensity prior to any scattering events. 
+\pause \begin{equation}
+    I(\tau) = I_0 e^{-\tau}
+    \label{eq:intensity}
+\end{equation}
+\pause The probability distribution:
+\begin{equation}
+    P(\tau) = e^{-\tau}
+    \label{eq:ptau}
+\end{equation}
+\pause can be approached by drawing a random number $\mathcal{R} \in [0,1]$, with the requirement
+\begin{equation}
+    \mathcal{R} = \int_{0}^{\tau} e^{-\tau'} \diffd \tau'
+    \label{eq:R_req}
+\end{equation}
+inverting,
+\begin{equation}
+    \tau(\mathcal{R}) = -\ln \left( \mathcal{R} \right)
+    \label{eq:randtau}
+\end{equation}
+\citepads{2010PhDT.......254L}
 \end{frame}
+
+In stark contrast to analytical solutions that are deterministic, where the outcome can be explained by a set of conditions, or a set of conditions produce a certain outcome; a \textit{stochastic model} is in some manner non-deterministic, and can thus be described by probability distributions. 
+
+Radiative transport is inherently in the quantum domain of the world. As we know, observables in quantum mechanics are collapses of the wave function at a more or less random location, obviously the most probable one, but still random. 
+
+In Monte Carlo methods, a random number is drawn under a probability distribution.  In radiative processes where photons are scattered, could these numbers be the velocity of the scatterer, the scattering angle, the polarisation direction or other quantities. 
 
 \begin{frame}
     \section{Polarisation}
