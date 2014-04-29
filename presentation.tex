@@ -3,6 +3,12 @@
 %% Beamer?
 \documentclass[ignorenonframetext]{beamer}
 \usecolortheme[dark]{solarized}
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,
+    height=\paperheight]{figs/bg.png}
+}
+
+%\documentclass[ignorenonframetext,nocolor,handout]{beamer}
 
 %%% Handout?
 %\documentclass[noxcolor]{article}
@@ -11,7 +17,7 @@
 
 %%%
 
-\usepackage{amsmath,amssymb,amsfonts,dcolumn,color,graphicx,graphics,setspace,latexsym,setspace,lscape,subfigure,placeins,epsfig,hyperref}
+\usepackage{amsmath,amssymb,amsfonts,dcolumn,color,graphicx,graphics,setspace,latexsym,setspace,lscape,subfigure,placeins,epsfig,hyperref,adjustbox}
 \usepackage{eulervm}
 
 %\setbeamersize{text margin left=10pt}
@@ -41,6 +47,10 @@
 %gets rid of navigation symbols
     \setbeamertemplate{navigation symbols}{}
 
+}
+
+\mode<handout>{
+\definecolor{solarizedBase3}{HTML}{000000}
 }
 
 %\documentclass[preprint]{aa}
@@ -202,9 +212,11 @@ What \textit{is} out there?}
                 Light is the only current source of information about the universe, one cannot count particles, measure the magnetic field directly or stick a thermometer out there and wait. 
                 
                 In the future, one might imagine that some ingenious way of detecting neutrinos has been invented, and that would give us another source of information.
-            \item[Big Bang]
-            \item[Dark ages]
-            \item[Epoch of Reionisation]
+            \item[Big Bang] In the beginning, the universe was a hot dense place. Quantum fluctuations seeded the initial perturbations that would grow into the structures of the universe. 
+            \item[Dark ages] But it was a dark place following big bang, after matter and radiation had decoupled. After decoupling, radiation did no longer collide frequently enough with matter to keep stay in equilibrium. Soon, the universe has cooled enough to allow neutral hydrogen to form. The sky was dark, but matter and energy was creating gravitational wells. Soon, these wells would give rise to the first visible structures of the universe.
+            \item[Epoch of Reionisation] When the wells were getting full and the first Population III stars were formed, massive, metal free and short lived. These gave rise to galactic superwinds blowing out from the proto-galaxies. Also, dust accrete around black holes, gaining enormous energies, radiating X-rays.
+
+                However, all this energetic radiation met neutral hydrogen that was ionised, but soon recombined, making the universe a virtually dark place at these wavelengths. But as the universe expanded, the particle concentration was diluted and bubbles of ionised hydrogen could be formed.
             \item[The first light]
                 The most abundant element in the universe is hydrogen, constituting more than 90 \% of all the particles.
                 
@@ -235,11 +247,15 @@ What \textit{is} out there?}
     \begin{figure}[htb]
         \centering
         \includegraphics[width=0.7\columnwidth]{figs/zaroubi_EOR.png}
-        \caption{ Evolution of the differential brightness temperature $\delta T_b \equiv T_b - T_{\rm CMB}$, where $T_b$: brightness temperature, $T_{\rm CMB}$: CMB temperature. {\em Top case: Mini-qsos, Middle case: Thermal sources (stars), Bottom case: Hybrid}. From \citeads{2013ASSL..396...45Z}. }
+        \caption{ Evolution of the differential brightness temperature $\delta T_b \equiv T_b - T_{\rm CMB}$, where $T_b$: brightness temperature, $T_{\rm CMB}$: CMB temperature. {\em Top case: Mini-qsos, Middle case: Thermal sources (stars), Bottom case: Hybrid}. From \citetads{2013ASSL..396...45Z}. }
         \label{fig:1_EOR}
     \end{figure}
 
 \end{frame}
+
+In fig.~(\ref{fig:1_EOR}), three different reionisation regimes are plotted. The $y$-axis comprises of the signal a radio telescope would detect in the $xy$-plane of its observation, thus is one axis compressed onto the other.
+
+The $x$-axis of the figure is the evolution of that $xy$-plane with time, or redshift $z$. Note that the last scattering surface, or the surface of which we observe the CMB is located at $z=1100$, however, is the redshifts here $z\in (11,6)$, which is much smaller. We are at $z=0$. However, this might be misleading, the universe is 13.8 billion years, and $z=11$ is approx 13.4 billion years ago, and $z=6$ is approx 12.9 billion years ago. 
 
 \subsection{Causes of reionisation}
 The epoch of reionisation follows the dark ages. It is the period when the ubiquitous hydrogen of the universe is ionised.
@@ -338,27 +354,134 @@ with $I_0$ the initial intensity prior to any scattering events.
 \end{equation}
 inverting,
 \begin{equation}
-    \tau(\mathcal{R}) = -\ln \left( \mathcal{R} \right)
+    \tau(\mathcal{R}) = -\ln \left( 1- \mathcal{R} \right)
     \label{eq:randtau}
 \end{equation}
 \citepads{2010PhDT.......254L}
 \end{frame}
 
-In stark contrast to analytical solutions that are deterministic, where the outcome can be explained by a set of conditions, or a set of conditions produce a certain outcome; a \textit{stochastic model} is in some manner non-deterministic, and can thus be described by probability distributions. 
+In stark contrast to analytical solutions that are deterministic, where the outcome can be explained by a set of conditions, or a set of conditions produce a certain outcome; \textit{stochastic models} are in some manner non-deterministic, and can thus be described by probability distributions. 
 
 Radiative transport is inherently in the quantum domain of the world. As we know, observables in quantum mechanics are collapses of the wave function at a more or less random location, obviously the most probable one, but still random. 
 
-In Monte Carlo methods, a random number is drawn under a probability distribution.  In radiative processes where photons are scattered, could these numbers be the velocity of the scatterer, the scattering angle, the polarisation direction or other quantities. 
+In Monte Carlo methods, a random number is drawn under a probability distribution.  In radiative processes where photons are scattered, these numbers could be the velocity of the scatterer, the scattering angle, the polarisation direction or other quantities. 
+
+\section{Polarisation}
+In this section, I will review polarisation basics, how astrophysical sources produce polarised light and finally the process of implementing polarisation into existing Monte Carlo radiative transfer code.
 
 \begin{frame}
-    \section{Polarisation}
     \mode<presentation>{
     \begin{center}
     {\huge \textcolor{solarizedBase3}{
         Polarisation
     }}
-\end{center}}
+    \end{center}}
+\pause
+\begin{quotation}
+    ``\textit{A ray of ordinary light is symmetrical with respect to the direction of propagation. If, for example, this direction be vertical, there is nothing that can be said concerning the north and south sides of the ray that is not equally true concerning the east and west sides. In polarized light this symmetry is lost.}''
+    
+    \hfill P.~137, \cite{1888Rayleigh}.
+\end{quotation}
+
 \end{frame}
+
+\begin{frame}
+    \mode<presentation>{
+    \begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        Polarisation
+    }}
+    \end{center}
+    }
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/kyrola_setup.png}
+    \caption{From \citetads{1998A&A...332..732B}.}
+    \label{fig:kyrola_setup}
+\end{figure}
+
+
+\end{frame}
+
+The geometry in fig.~(\ref{fig:kyrola_setup}) is defined as following:
+\begin{itemize}
+    \item The $z$-axis is defined by the incoming photon
+    \item The $xz$-plane is defined as the plane in which the photon is scattered,
+    \item The $y$-axis follows from the definition of the $xz$-plane, as it must be perpendicular to it. 
+    \item The polarisation vector is divided into two parts,
+        \begin{enumerate}
+            \item One component \textbf{parallel to the plane of the scattering}, that is, a component that \textit{is in the $xz$-plane}, denoted by the unit vector $\mathbf{e}_l$ or $\parallel$ and
+            \item A component that is \textbf{perpendicular to the scattering plane}. Denoted by the unit vector $\mathbf{e}_r$ or $\perp$.
+        \end{enumerate}
+    \item \textit{Note that there is an error in the figure---the unit vectors in the parallel plane are defined with opposite sine and cosine-functions, \textbf{and} the $e_z$ component has falsely negative sign}
+\end{itemize}
+
+\begin{frame}
+    \mode<presentation>{
+    \begin{center}
+    {\huge \textcolor{solarizedBase3}{
+        Polarisation
+    }}
+    \end{center}
+    }
+    \begin{center}
+    \textit{Does it matter whether a photon is scattered at the line centre or in the wing?}
+    \end{center}
+\pause
+\textbf{Line centre:}
+\begin{equation}
+    p(\theta) = \frac{11}{12} + \frac{3}{12} \cos^2 \theta, \qquad
+    \Pi(\theta) = \frac{\sin^2 \theta}{\frac{11}{3} + \cos^2 \theta}
+    \label{eq:resonance}
+\end{equation}
+with: $p(\theta)$: \textit{phase function}, giving scattering probability and $\Pi(\theta)$: \textit{polarisation degree}.
+
+\pause
+\textbf{Wing:}
+\begin{equation}
+    p(\theta) = \frac{3}{4} + \frac{3}{4} \cos^2 \theta, \qquad
+    \Pi(\theta) = \frac{\sin^2\theta}{1 + \cos^2 \theta}
+    \label{eq:wing}
+\end{equation}
+\mode<presentation>{\hfill} From \citetads{2008MNRAS.386..492D}.
+    
+\end{frame}
+
+The first case is in the line centre, eq.~(\ref{eq:resonance}), the second case is wing scatterings.
+
+The \textit{phase function} $p(\theta)$, giving the \textbf{probability of being scattered at an angle $\theta$}. The degree of polarisation is found as $\Pi(\theta)$.
+
+In the case of wing scattering, that is for wavelengths $\lambda \neq \lambda_0$ where $\lambda_0 = 1216$~\AA ~is the Ly$\alpha$ resonance line frequency.
+
+\begin{frame}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=0.5\columnwidth]{figs/poldegree.png}
+        \caption{Polarisation degree $\Pi(\theta) = \frac{I_{\parallel} - I_\perp}{I_\parallel + I_\perp}$, here $I_i$ are the components of the intensities following fig.~(\ref{fig:kyrola_setup}). The red solid line is in the case where scattering occurs in the Ly$\alpha$ line centre, where as the dashed blue line is for wing scattering events.}
+        \label{fig:poldegree}
+    \end{figure}
+\end{frame}
+
+However, it is worth noticing that current models that involve polarisation treat scattering events \textbf{as if the field prior to the scatterings was unpolarised}, even though one should expect many scattering events in an optical thick medium. 
+
+\begin{frame}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=0.7\columnwidth]{figs/dijkstra_poldegree.png}
+        \caption{Histogram showing angle-averaged polarisation as function of scattering events. Line showing the {\em probability distribution} of the number of scatterings. Numerical model where one has single expanding thin shell of neutral hydrogen around the galaxy. From \citetads{2008MNRAS.386..492D}.}
+        \label{fig:dijkstra_pol_scatterings}
+    \end{figure}
+\end{frame}
+
+As seen in fig.~(\ref{fig:dijkstra_pol_scatterings}), a decrease in polarisation follows as a consequence of an increase in scattering events. This is physically intuitive, as a large number of scattering events would lead to a more isotropic radiation field, ie., any significant polarisation trend is simply washed out by the scattering events.
+
+\section{Conclusion}
+I will round off by commenting the model used in the last simulation. The model with an expanding spherical shell is disputed in a recent article, where observational constraints have been imposed on the parameters needed in the numerical model. The observations show that the interstellar absorption lines are \textbf{significantly broader} than what a numerical model can reproduce with the same physical parameters. The numerical models that are in use are not physically satisfying. 
+
+Also, future treatment of polarisation would need to treat the \textit{phase function} more correctly, as the current phase and polarisation degree functions assume that the scattered photons were unpolarised prior to colliding. 
+In all, the polarisation has been shown to be model dependent, and can thus give novel insight into the dynamics and constraints of the earliest galaxies of the universe.
+
 
 \begin{frame}
 
